@@ -53,8 +53,8 @@ class Config:
     SITE_URL = 'https://tgju.org/'
     PROXY_ENABLED = True
     PROXIES = {
-        'http': 'socks5h://127.0.0.1:2080',
-        'https': 'socks5h://127.0.0.1:2080',
+        'http': os.getenv('HTTP_PROXY'),
+        'https': os.getenv('HTTPS_PROXY'),
     }
     BOT_TOKEN = os.getenv('TELEGRAM_BOT_ID')
     TELEGRAM_CHANNEL_ID = os.getenv('TELEGRAM_CHANNEL_ID')
