@@ -172,6 +172,25 @@ class ExtractPrices:
 
         return ''.join(data)
 
+    def __get_gold_silver_block(self):
+        data = []
+        coin_section = self.bs.find("a", href="gold-chart", class_="table-tag").find_next("table")
+        rows = coin_section.select("tbody tr")
+
+        for row in rows:
+            cells = row.find_all(["th", "td"])
+            if not cells:
+                continue
+
+            name = cells[0].get_text(strip=True)
+            price = cells[1].get_text(strip=True)
+            change = cells[2].get_text(strip=True)
+
+            data.append(f"💰 {name}: {price} ریال  ({change}) \n")
+
+        return ''.join(data)
+
+
     def get_prices(self, log):
         for p_details in self._prices:
             try:
@@ -186,8 +205,9 @@ class ExtractPrices:
             except Exception as e:
                 LOG.error(repr(e))
 
-        message = self.__format_prices() + '\n'
-        message += self.__get_gold_coin_block() + '\n'
+        message = self.__format_prices() + '\n\n'
+        message += self.__get_gold_silver_block() + '\n\n'
+        message += self.__get_gold_coin_block() + '\n\n'
         message += self.__get_gold_bubble_block()
 
         return message
