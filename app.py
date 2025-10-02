@@ -130,27 +130,60 @@ class ExtractPrices:
 
         return "\n".join(lines)
 
-    def __get_price_in_block(self, section_id: str):
+    def __get_price_in_main_block(self, section_id: str):
         section = self.bs.select_one(section_id)
         price = section.select_one('.info-price').text
         percentage_of_change = section.select_one('.info-change').text
 
         return price, percentage_of_change
 
+    def __get_gold_bubble_block(self):
+        data = []
+        coin_section = self.bs.select_one("#coin_buble")
+        rows = coin_section.select("tbody tr")
+
+        for row in rows:
+            cells = row.find_all(["th", "td"])
+            if not cells:
+                continue
+
+            name = cells[0].get_text(strip=True)
+            price = cells[1].get_text(strip=True)
+            change = cells[2].get_text(strip=True)
+            print(cells[2],cells[2].get("class", []))
+            # if "low" in cells[2].get("class", []):
+            #     arrow = "📉"
+            # elif "high" in cells[2].get("class", []):
+            #     arrow = "📈"
+            # else:
+            #     # arrow = "⏸️"
+            #
+            # if "%" not in change:
+            #     change = "بدون تغییر"
+            #     # arrow = "⏸️"
+
+            data.append(f"💰 {name}: {price} تومان  ({change}) \n")
+
+        return ''.join(data)
+
     def get_prices(self, log):
         for p_details in self._prices:
             try:
-                price, percentage_of_change = self.__get_price_in_block(p_details.get('id'))
+                price, percentage_of_change = self.__get_price_in_main_block(p_details.get('id'))
                 p_details.update(
                     {
                         "price": float(price.replace(',', '', 1000)),
                         "change_percentage": percentage_of_change
                     }
                 )
+
             except Exception as e:
                 LOG.error(repr(e))
 
-        return self.__format_prices()
+        message = self.__format_prices() + '\n'
+        message += self.__get_gold_bubble_block()
+
+        return message
 
 
 def extract_prices():
@@ -174,6 +207,7 @@ def main():
     while True:
         LOG.info(f'job started')
         price_messages = extract_prices()
+        print(price_messages)
         send_to_telegram(price_messages)
         time.sleep(3600 / 12)
 
