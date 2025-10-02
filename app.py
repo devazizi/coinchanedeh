@@ -39,7 +39,6 @@ def setup_custom_logger(name):
     logger = logging.getLogger(name)
     logger.setLevel(logging.DEBUG)
 
-    # Remove any existing handlers
     if logger.hasHandlers():
         logger.handlers.clear()
 
@@ -150,17 +149,24 @@ class ExtractPrices:
             name = cells[0].get_text(strip=True)
             price = cells[1].get_text(strip=True)
             change = cells[2].get_text(strip=True)
-            print(cells[2],cells[2].get("class", []))
-            # if "low" in cells[2].get("class", []):
-            #     arrow = "📉"
-            # elif "high" in cells[2].get("class", []):
-            #     arrow = "📈"
-            # else:
-            #     # arrow = "⏸️"
-            #
-            # if "%" not in change:
-            #     change = "بدون تغییر"
-            #     # arrow = "⏸️"
+
+            data.append(f"💰 {name}: {price} تومان  ({change}) \n")
+
+        return ''.join(data)
+
+    def __get_gold_coin_block(self):
+        data = []
+        coin_section = self.bs.select_one("#coin-table")
+        rows = coin_section.select("tbody tr")
+
+        for row in rows:
+            cells = row.find_all(["th", "td"])
+            if not cells:
+                continue
+
+            name = cells[0].get_text(strip=True)
+            price = cells[1].get_text(strip=True)
+            change = cells[2].get_text(strip=True)
 
             data.append(f"💰 {name}: {price} تومان  ({change}) \n")
 
@@ -181,6 +187,7 @@ class ExtractPrices:
                 LOG.error(repr(e))
 
         message = self.__format_prices() + '\n'
+        message += self.__get_gold_coin_block() + '\n'
         message += self.__get_gold_bubble_block()
 
         return message
@@ -207,7 +214,7 @@ def main():
     while True:
         LOG.info(f'job started')
         price_messages = extract_prices()
-        print(price_messages)
+        # print(price_messages)
         send_to_telegram(price_messages)
         time.sleep(3600 / 12)
 
