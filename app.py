@@ -83,11 +83,11 @@ def crawl_page():
 
 class ExtractPrices:
     _prices = [
-        {"id": '#l-price_dollar_rl', "text": "دلار", 'price': 0, 'change_percentage': 0, 'unit': 'تومان'},
-        {"id": '#l-sekee', "text": "سکه تمام امامی", 'price': 0, 'change_percentage': 0, 'unit': 'تومان'},
-        {"id": '#l-mesghal', "text": "مثقال", 'price': 0, 'change_percentage': 0, 'unit': 'تومان'},
+        {"id": '#l-price_dollar_rl', "text": "دلار", 'price': 0, 'change_percentage': 0, 'unit': 'ریال'},
+        {"id": '#l-sekee', "text": "سکه تمام امامی", 'price': 0, 'change_percentage': 0, 'unit': 'ریال'},
+        {"id": '#l-mesghal', "text": "مثقال", 'price': 0, 'change_percentage': 0, 'unit': 'ریال'},
         {"id": '#l-ons', "text": "انس طلا", 'price': 0, 'change_percentage': 0, 'unit': 'دلار'},
-        {"id": '#l-crypto-tether-irr', "text": "تتر", 'price': 0, 'change_percentage': 0, 'unit': 'تومان'},
+        {"id": '#l-crypto-tether-irr', "text": "تتر", 'price': 0, 'change_percentage': 0, 'unit': 'ریال'},
         {"id": '#l-crypto-bitcoin', "text": "بیت کوین", 'price': 0, 'change_percentage': 0, 'unit': 'دلار'}
     ]
 
@@ -150,7 +150,7 @@ class ExtractPrices:
             price = cells[1].get_text(strip=True)
             change = cells[2].get_text(strip=True)
 
-            data.append(f"💰 {name}: {price} تومان  ({change}) \n")
+            data.append(f"💰 {name}: {price} ریال  ({change}) \n")
 
         return ''.join(data)
 
