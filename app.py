@@ -77,7 +77,7 @@ def crawl_page():
         "Sec-Fetch-User": "?1"
     }
 
-    response = requests.get(Config.SITE_URL, headers=headers, proxies=Config.PROXY_ENABLED)
+    response = requests.get(Config.SITE_URL, headers=headers, proxies=Config.PROXIES)
     response.raise_for_status()
     return response.text
 
@@ -166,7 +166,7 @@ def send_to_telegram(text):
         "text": text,
         "parse_mode": "Markdown"
     }
-    response = requests.post(url, data=payload, proxies=Config.PROXY_ENABLED)
+    response = requests.post(url, data=payload, proxies=Config.PROXIES)
     LOG.info(f'send to Telegram channel {response.json().get('ok')}')
 
 
