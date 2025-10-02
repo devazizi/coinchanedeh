@@ -168,7 +168,7 @@ class ExtractPrices:
             price = cells[1].get_text(strip=True)
             change = cells[2].get_text(strip=True)
 
-            data.append(f"💰 {name}: {price} تومان  ({change}) \n")
+            data.append(f"💰 {name}: {price} ریال  ({change}) \n")
 
         return ''.join(data)
 
