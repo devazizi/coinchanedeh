@@ -149,7 +149,7 @@ class ExtractPrices:
             price = cells[1].get_text(strip=True)
             # change = cells[2].get_text(strip=True)
             change = ''
-            data.append(f"💰 {name}: {price} ریال  ({change}) \n")
+            data.append(f"💰 {name}: {price} ریال  {change} \n")
 
         return ''.join(data)
 
@@ -167,7 +167,7 @@ class ExtractPrices:
             price = cells[1].get_text(strip=True)
             # change = cells[2].get_text(strip=True)
             change = ''
-            data.append(f"💰 {name}: {price} ریال  ({change}) \n")
+            data.append(f"💰 {name}: {price} ریال  {change} \n")
 
         return ''.join(data)
 
@@ -185,7 +185,7 @@ class ExtractPrices:
             price = cells[1].get_text(strip=True)
             # change = cells[2].get_text(strip=True)
             change = ''
-            data.append(f"💰 {name}: {price} ریال  ({change}) \n")
+            data.append(f"💰 {name}: {price} ریال  {change} \n")
 
         return ''.join(data)
 
@@ -204,9 +204,9 @@ class ExtractPrices:
             except Exception as e:
                 LOG.error(repr(e))
 
-        message = self.__format_prices() + '\n\n'
-        message += self.__get_gold_silver_block() + '\n\n'
-        message += self.__get_gold_coin_block() + '\n\n'
+        message = self.__format_prices() + '\n'
+        message += self.__get_gold_silver_block() + '\n'
+        message += self.__get_gold_coin_block() + '\n'
         message += self.__get_gold_bubble_block()
 
         return message
@@ -233,7 +233,7 @@ def main():
     while True:
         LOG.info(f'job started')
         price_messages = extract_prices()
-        print(price_messages)
+        # print(price_messages)
         send_to_telegram(price_messages)
         time.sleep(3600 / 12)
 
