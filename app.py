@@ -107,9 +107,7 @@ class ExtractPrices:
         return len(str(num).split('.')[-1]) == 2
 
     def __format_prices(self):
-        lines = [r"*📊 قیمت‌ها امروز*", '\n',
-                 "*قیمت های جدید رسید جنبه نداری نبین یوقت کپ می کنی می افتی رو دستمون حالا خربیار باقالی بار کن*",
-                 '\n']
+        lines = []
         for item in self._prices:
             price = item['price'] if not self.__has_two_decimal_places(item['price']) else math.ceil(item['price'])
             # change = float(self.__clean_number(item['change_percentage']))
@@ -149,8 +147,8 @@ class ExtractPrices:
 
             name = cells[0].get_text(strip=True)
             price = cells[1].get_text(strip=True)
-            change = cells[2].get_text(strip=True)
-
+            # change = cells[2].get_text(strip=True)
+            change = ''
             data.append(f"💰 {name}: {price} ریال  ({change}) \n")
 
         return ''.join(data)
@@ -167,8 +165,8 @@ class ExtractPrices:
 
             name = cells[0].get_text(strip=True)
             price = cells[1].get_text(strip=True)
-            change = cells[2].get_text(strip=True)
-
+            # change = cells[2].get_text(strip=True)
+            change = ''
             data.append(f"💰 {name}: {price} ریال  ({change}) \n")
 
         return ''.join(data)
@@ -185,8 +183,8 @@ class ExtractPrices:
 
             name = cells[0].get_text(strip=True)
             price = cells[1].get_text(strip=True)
-            change = cells[2].get_text(strip=True)
-
+            # change = cells[2].get_text(strip=True)
+            change = ''
             data.append(f"💰 {name}: {price} ریال  ({change}) \n")
 
         return ''.join(data)
