@@ -112,20 +112,21 @@ class ExtractPrices:
                  '\n']
         for item in self._prices:
             price = item['price'] if not self.__has_two_decimal_places(item['price']) else math.ceil(item['price'])
-            change = float(self.__clean_number(item['change_percentage']))
+            # change = float(self.__clean_number(item['change_percentage']))
 
-            if change > 0:
-                emoji = "📈"
-                change_text = f"+{change}%"
-            elif change < 0:
-                emoji = "📉"
-                change_text = f"{change}%"
-            else:
-                emoji = "⏸️"
+            # if change > 0:
+            #     emoji = "📈"
+            #     change_text = f"+{change}%"
+            # elif change < 0:
+            #     emoji = "📉"
+            #     change_text = f"{change}%"
+            # else:
+            #     emoji = "⏸️"
+            #
+            #     change_text = "قمیتی ازش دردسترس نیست" if price == 0 else "بدون تغییر"
 
-                change_text = "قمیتی ازش دردسترس نیست" if price == 0 else "بدون تغییر"
-
-            lines.append(f"💰 {item['text']}: {int(price)} {item['unit']} {emoji} ({change_text})")
+# {emoji} ({change_text})
+            lines.append(f"💰 {item['text']}: {int(price)} {item['unit']}")
 
         return "\n".join(lines)
 
@@ -234,7 +235,7 @@ def main():
     while True:
         LOG.info(f'job started')
         price_messages = extract_prices()
-        # print(price_messages)
+        print(price_messages)
         send_to_telegram(price_messages)
         time.sleep(3600 / 12)
 
