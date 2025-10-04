@@ -204,7 +204,7 @@ class ExtractPrices:
             except Exception as e:
                 LOG.error(repr(e))
 
-        message = self.__format_prices()
+        message = self.__format_prices() + '\n'
         message += self.__get_gold_silver_block()
         message += self.__get_gold_coin_block()
         message += self.__get_gold_bubble_block()
