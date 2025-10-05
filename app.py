@@ -235,7 +235,7 @@ def main():
         price_messages = extract_prices()
         # print(price_messages)
         send_to_telegram(price_messages)
-        time.sleep(3600 / 12)
+        time.sleep(60)
 
 
 if __name__ == '__main__':
