@@ -82,14 +82,6 @@ def crawl_page():
 
 
 class ExtractPrices:
-    _prices = [
-        {"id": '#l-price_dollar_rl', "text": "دلار", 'price': 0, 'change_percentage': 0, 'unit': 'ریال'},
-        {"id": '#l-sekee', "text": "سکه تمام امامی", 'price': 0, 'change_percentage': 0, 'unit': 'ریال'},
-        {"id": '#l-mesghal', "text": "مثقال", 'price': 0, 'change_percentage': 0, 'unit': 'ریال'},
-        {"id": '#l-ons', "text": "انس طلا", 'price': 0, 'change_percentage': 0, 'unit': 'دلار'},
-        {"id": '#l-crypto-tether-irr', "text": "تتر", 'price': 0, 'change_percentage': 0, 'unit': 'ریال'},
-        {"id": '#l-crypto-bitcoin', "text": "بیت کوین", 'price': 0, 'change_percentage': 0, 'unit': 'دلار'}
-    ]
 
     def __init__(self, bs: BeautifulSoup):
         self.bs = bs
@@ -106,24 +98,11 @@ class ExtractPrices:
     def __has_two_decimal_places(self, num: float) -> bool:
         return len(str(num).split('.')[-1]) == 2
 
-    def __format_prices(self):
+    def __format_prices(self, _prices):
         lines = []
-        for item in self._prices:
+        for item in _prices:
             price = item['price'] if not self.__has_two_decimal_places(item['price']) else math.ceil(item['price'])
-            # change = float(self.__clean_number(item['change_percentage']))
 
-            # if change > 0:
-            #     emoji = "📈"
-            #     change_text = f"+{change}%"
-            # elif change < 0:
-            #     emoji = "📉"
-            #     change_text = f"{change}%"
-            # else:
-            #     emoji = "⏸️"
-            #
-            #     change_text = "قمیتی ازش دردسترس نیست" if price == 0 else "بدون تغییر"
-
-# {emoji} ({change_text})
             lines.append(f"💰 {item['text']}: {int(price)} {item['unit']}")
 
         return "\n".join(lines)
@@ -191,7 +170,17 @@ class ExtractPrices:
 
 
     def get_prices(self, log):
-        for p_details in self._prices:
+
+        _prices = [
+            {"id": '#l-price_dollar_rl', "text": "دلار", 'price': 0, 'change_percentage': 0, 'unit': 'ریال'},
+            {"id": '#l-sekee', "text": "سکه تمام امامی", 'price': 0, 'change_percentage': 0, 'unit': 'ریال'},
+            {"id": '#l-mesghal', "text": "مثقال", 'price': 0, 'change_percentage': 0, 'unit': 'ریال'},
+            {"id": '#l-ons', "text": "انس طلا", 'price': 0, 'change_percentage': 0, 'unit': 'دلار'},
+            {"id": '#l-crypto-tether-irr', "text": "تتر", 'price': 0, 'change_percentage': 0, 'unit': 'ریال'},
+            {"id": '#l-crypto-bitcoin', "text": "بیت کوین", 'price': 0, 'change_percentage': 0, 'unit': 'دلار'}
+        ]
+
+        for p_details in _prices:
             try:
                 price, percentage_of_change = self.__get_price_in_main_block(p_details.get('id'))
                 p_details.update(
@@ -204,7 +193,7 @@ class ExtractPrices:
             except Exception as e:
                 LOG.error(repr(e))
 
-        message = self.__format_prices() + '\n'
+        message = self.__format_prices(_prices) + '\n'
         message += self.__get_gold_silver_block()
         message += self.__get_gold_coin_block()
         message += self.__get_gold_bubble_block()
@@ -233,7 +222,7 @@ def main():
     while True:
         LOG.info(f'job started')
         price_messages = extract_prices()
-        # print(price_messages)
+        #print(price_messages)
         send_to_telegram(price_messages)
         time.sleep(60)
 
