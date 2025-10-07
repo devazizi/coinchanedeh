@@ -206,7 +206,6 @@ def extract_prices():
     bs = BeautifulSoup(page_content, 'html.parser')
     return ExtractPrices(bs).get_prices(LOG)
 
-
 def send_to_telegram(text):
     url = f"https://api.telegram.org/bot{Config.BOT_TOKEN}/sendMessage"
     payload = {
